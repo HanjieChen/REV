@@ -2,8 +2,13 @@
 Code for the paper [REV: Information-Theoretic Evaluation of Free-Text Rationales](https://arxiv.org/pdf/2210.04982.pdf)
 
 ### Preparation
-- Install the packages and toolkits in `requirements.txt`
-- Generate baseline rationales
+Install the packages and toolkits in `requirements.txt`
+
+### Construct Baseline Rationales
+```
+./run_question_converter.sh task dataset_path device
+```
+The input data should be in a `.jsonl` file with the format `{"question_text": "...?", "answer_text": "..."}`
 
 ### Training Base Models
 
@@ -16,7 +21,7 @@ python train.py train --gpu_id 2 --model cnn/lstm --dataset sst2/imdb/ag/trec --
 
 
 ### Acknowledgments
-The code for constructing baseline rationales was adapted from [jifan-chen/QA-Verification-Via-NLI](https://github.com/jifan-chen/QA-Verification-Via-NLI/tree/master/seq2seq_converter)
+The code for constructing baseline rationales (for CQA task) was adapted from [jifan-chen/QA-Verification-Via-NLI](https://github.com/jifan-chen/QA-Verification-Via-NLI/tree/master/seq2seq_converter)
 
 
 ### Reference:
