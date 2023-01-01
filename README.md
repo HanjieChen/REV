@@ -9,6 +9,7 @@ Install the packages and toolkits in `requirements.txt`
 ./run_question_converter.sh task dataset_path device
 ```
 The input data should be in a `.jsonl` file with the format `{"question_text": "...?", "answer_text": "..."}`
+The output will be saved in a `.jsonl.predictions` file with the format `{"question_text": "...?", "answer_text": "...", "question_statement_text": "..."}`. We use the `"question_statement_text"` as the baseline rationale.
 
 ### Training Base Models
 
