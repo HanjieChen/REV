@@ -9,17 +9,17 @@ Install the packages and toolkits in `requirements.txt`
 ./run_question_converter.sh task dataset_path device
 ```
 - The input data should be in a `.jsonl` file with the format `{"question_text": "...?", "answer_text": "..."}`
-- The output will be saved in a `.jsonl.predictions` file with the format `{"question_text": "...?", "answer_text": "...", "question_statement_text": "..."}`. We use the `"question_statement_text"` as the baseline rationale.
+- The output will be saved in a `.jsonl.predictions` file with the format `{"question_text": "...?", "answer_text": "...", "question_statement_text": "..."}`. We use the `question_statement_text` as the baseline rationale.
 
-### Training Base Models
-
-**Training CNN/LSTM base models**
-
-For IMDB, set `--max_seq_length 250`. Fine-tune hyperparameters (e.g. learning rate, the number of hidden units) on each dataset.
+### Train the Evaluator
 ```
-python train.py train --gpu_id 2 --model cnn/lstm --dataset sst2/imdb/ag/trec --task base --batch-size 64 --epochs 10 --learning-rate 0.01 --max_seq_length 50
+./rev/train.sh device data_type(regular) task epochs lr
 ```
 
+### Evaluation
+```
+./rev/evaluate.sh device split test_type out_type model_name task
+```
 
 ### Acknowledgments
 The code for constructing baseline rationales (for CQA task) was adapted from [jifan-chen/QA-Verification-Via-NLI](https://github.com/jifan-chen/QA-Verification-Via-NLI/tree/master/seq2seq_converter)
