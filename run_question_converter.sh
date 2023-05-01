@@ -7,7 +7,6 @@ MODEL_NAME="t5-large"
 
 
 working_dir="./src/seq2seq_converter/model_data"
-# model_url="https://docs.google.com/uc?export=download&id=1zQEKSIuJmX08FxE5JYLwnj4v5Y8TbtYz"
 
 question_converter_path="${working_dir}/question-converter-t5-3b.tar.gz"
 output_path="${dataset_path}.predictions"
@@ -19,13 +18,8 @@ else
     echo "${working_dir} already exist"
 fi
 
-# if [[ ! -f ${dataset_path} ]]; then
-#     echo "Downloading data and model ........"
-#     wget -O ${dataset_path} ${data_url}
-# fi
-
 if [[ ! -f ${question_converter_path} ]]; then
-    wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1zQEKSIuJmX08FxE5JYLwnj4v5Y8TbtYz' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1zQEKSIuJmX08FxE5JYLwnj4v5Y8TbtYz" -O "${question_converter_path}" && rm -rf /tmp/cookies.txt
+    wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1Il5_BHnW9Rf0T72KF2JHBIA87Lzu-F7i' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1Il5_BHnW9Rf0T72KF2JHBIA87Lzu-F7i" -O "${question_converter_path}" && rm -rf /tmp/cookies.txt
 fi
 
 if [[ ! -d ${converter_extraction_path} ]]; then
