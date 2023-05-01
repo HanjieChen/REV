@@ -5,6 +5,7 @@ Code for the paper [REV: Information-Theoretic Evaluation of Free-Text Rationale
 Install the packages and toolkits in `requirements.txt`
 
 ### Construct Baseline Rationales
+In case of incompatibility, please use another environment with packages in [requirements](https://github.com/jifan-chen/QA-Verification-Via-NLI/blob/master/requirements.txt).
 ```
 ./run_question_converter.sh task dataset_path device
 ```
