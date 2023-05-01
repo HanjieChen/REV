@@ -1,0 +1,14 @@
+,q_no,q_concept,q_text,q_op1,q_op2,q_op3,q_op4,q_op5,q_ans,taskA_pos,taskA_neg,taskB
+0,af836abc58e0daf36df1d8d6830b70c5,applying for job,What does someone typically feel when applying for a job?,horror,anxiety and fear,rejection,increased workload,being employed,anxiety and fear,"Anxiety is the feeling of fear when doing something with an uncertain outcome.
+Applying for a job has an uncertain outcome.","Horror is an intense feeling of fear or shock.
+One won't feel horror when applying for a job.
+Rejection might happen after interview.
+Rejection would not happen while applying for a job.
+Increased workload is not a feeling.
+Being employed is not a feeling.",Anxiety is the feeling of fear when doing something with an uncertain outcome and applying for a job has an uncertain outcome. So one would typically feel anxiety and fear when applying for a job. One won't feel horror or rejection while applying for a job and the other options are not feelings.
+1,2ac72eaf30a633c410b1bd658bbef0ba,car,Where do cars usually travel at very high speeds?,freeway,road,race track,alley,parking lot,race track,"Racers compete on the race track
+Competing involves going at high speed
+Cars travel on a race track","Racers do not compete on the freeway
+Racers do not compete on the road
+Racers do not compete on the alley
+Racers do not compete in the parking lot","Racers compete on the race track and not on the freeway, road, alley or in the parking lot. Competing involves going at high speed and cars travel on a race track."
