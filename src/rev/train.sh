@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # env definf
 device=$1
-data_type=$2 # regular
-task=$3 # ECQA
+data_type=$2 # regular (r, b) / temp (b)
+task=$3 # ECQA / COSE / ESNLI / QUARTZ (--logging_steps 100)
 epochs=$4
 lr=$5
 

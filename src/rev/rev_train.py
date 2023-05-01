@@ -267,7 +267,7 @@ def main():
     )
     parser.add_argument(
         "--task",
-        default="delta-nli",
+        default="ECQA",
         type=str,
         help="what is the task? ECQA , etc.",
     )
@@ -281,7 +281,7 @@ def main():
         "--data_type",
         default="regular",
         type=str,
-        help="temp: template, regular: regular",
+        help="temp: b, regular: [r, b]",
     )
     parser.add_argument(
         '--seednum', 
@@ -290,11 +290,7 @@ def main():
     )
     args = parser.parse_args()
 
-    # for debug
     current_path = os.path.dirname(os.path.abspath(__file__))
-    args.out_dir = os.path.join(current_path, args.out_dir)
-    if args.seednum:
-        args.out_dir = args.out_dir+'_seed_'+str(args.seed)
 
     if not os.path.exists(args.out_dir):
         os.mkdir(args.out_dir)
@@ -339,6 +335,7 @@ def main():
       args.train_file = os.path.join(args.data_path, args.train_path)
       args.val_file = os.path.join(args.data_path, args.val_path)
       args.test_file = os.path.join(args.data_path, args.test_path)
+    # Put the constructed baseline rationales for gold labels under 'templated_rationales'
     elif args.data_type == 'temp':
       args.train_file  = os.path.join(current_path, '../', 'templated_rationales', args.task, 'train.jsonl.predictions')
       args.train_file = os.path.normpath(args.train_file)

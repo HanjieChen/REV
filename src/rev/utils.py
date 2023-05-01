@@ -30,14 +30,16 @@ def load_data_ecqa(args, in_file, data_type=None, test_type=None, out_type=None)
       file_name = in_file.split('/')[-1]
       if 'train' in file_name:
             split_type = 'train'
-      elif 'val' in file_name:
+      elif 'dev' in file_name:
             split_type = 'dev'
       elif 'test' in file_name:
             split_type = 'test'
       if args.do_train or test_type == 'gold':
             examples = []
             if data_type == 'regular':
-                  template_file = os.path.join(current_path, '../path_to_gold_rationales', split_type+'.jsonl.predictions')
+                  # read baseline rationales (b)
+                  template_file = os.path.join(current_path, '../', 'templated_rationales', args.task, split_type+'.jsonl.predictions')
+                  template_file = os.path.normpath(template_file)
                   samples = []
                   with open(template_file, 'r') as json_file:
                         json_list = list(json_file)
@@ -47,12 +49,14 @@ def load_data_ecqa(args, in_file, data_type=None, test_type=None, out_type=None)
                               rat = result['question_statement_text']
                               samples.append((rat, label))
 
+                  # read gold rationales (r)
                   df = pd.read_csv(in_file)
                   for i, row in df.iterrows():
                         pos_rat = row['taskA_pos'].replace('\n', " ")
                         answer = row['q_ans']
-                        sample = samples[i-1]
+                        sample = samples[i]
                         assert answer == sample[1]
+                        # concatenate [r, b]
                         examples.append((f"[rationale] {pos_rat} {sample[0]} [answer]", f"{answer} <eos>"))
             elif data_type == 'temp':
                   with open(in_file, 'r') as json_file:
@@ -61,8 +65,10 @@ def load_data_ecqa(args, in_file, data_type=None, test_type=None, out_type=None)
                               result = json.loads(json_str)
                               rat = result['question_statement_text']
                               answer = result['answer_text']
+                              # [b]
                               examples.append((f"[rationale] {rat} [answer]", f"{answer} <eos>"))
       elif test_type == 'gen':
+            # read the constructed baseline rationales for task model predicted labels
             template_file = os.path.join(current_path, '../path_to_task_model_outputs', args.task+'_'+args.out_type+'_'+args.task_model, \
                   split_type+'_'+args.out_type+'_outputs.jsonl.predictions')
             template_file = os.path.normpath(template_file)
@@ -151,7 +157,8 @@ def load_data_cose(args, in_file, data_type=None, test_type=None, out_type=None)
       if args.do_train or test_type == 'gold':
             examples = []
             if data_type == 'regular':
-                  template_file = os.path.join(current_path, '../path_to_gold_rationales', split_type+'.jsonl.predictions')
+                  # read baseline rationales (b)
+                  template_file = os.path.join(current_path, '../', 'templated_rationales', args.task, split_type+'.jsonl.predictions')
                   template_file = os.path.normpath(template_file)
                   samples = []
                   with open(template_file, 'r') as json_file:
@@ -162,12 +169,14 @@ def load_data_cose(args, in_file, data_type=None, test_type=None, out_type=None)
                               rat = result['question_statement_text']
                               samples.append((rat, label))
 
+                  # read gold rationales (r)
                   df = pd.read_csv(in_file)
                   for i, row in df.iterrows():
                         pos_rat = row['rationale']
                         answer = row['answer']
                         sample = samples[i]
                         assert answer == sample[1]
+                        # concatenate [r, b]
                         examples.append((f"[rationale] {pos_rat} {sample[0]} [answer]", f"{answer} <eos>"))
             elif data_type == 'temp':
                   with open(in_file, 'r') as json_file:
@@ -176,9 +185,11 @@ def load_data_cose(args, in_file, data_type=None, test_type=None, out_type=None)
                               result = json.loads(json_str)
                               rat = result['question_statement_text']
                               answer = result['answer_text']
+                              # [b]
                               examples.append((f"[rationale] {rat} [answer]", f"{answer} <eos>"))
 
       elif test_type == 'gen':
+            # read the constructed baseline rationales for task model predicted labels
             template_file = os.path.join(current_path, '../path_to_task_model_outputs', args.task+'_'+args.out_type+'_'+args.task_model, \
                   split_type+'_'+args.out_type+'_outputs.jsonl.predictions')
             template_file = os.path.normpath(template_file)
@@ -267,7 +278,8 @@ def load_data_esnli(args, in_file, data_type=None, test_type=None, out_type=None
       if args.do_train or test_type == 'gold':
             examples = []
             if data_type == 'regular':
-                  template_file = os.path.join(current_path, '../path_to_gold_rationales', split_type+'.jsonl.predictions')
+                  # read baseline rationales (b)
+                  template_file = os.path.join(current_path, '../', 'templated_rationales', args.task, split_type+'.jsonl.predictions')
                   template_file = os.path.normpath(template_file)
                   samples = []
                   with open(template_file, 'r') as json_file:
@@ -278,12 +290,14 @@ def load_data_esnli(args, in_file, data_type=None, test_type=None, out_type=None
                               rat = result['question_statement_text']
                               samples.append((rat, label))
 
+                  # read gold rationales (r)
                   df = pd.read_csv(in_file)
                   for i, row in df.iterrows():
                         pos_rat = row['rationale']
                         answer = row['label']
                         sample = samples[i]
                         assert answer == sample[1]
+                        # concatenate [r, b]
                         examples.append((f"[rationale] {pos_rat} {sample[0]} [answer]", f"{answer} <eos>"))
             elif data_type == 'temp':
                   with open(in_file, 'r') as json_file:
@@ -292,9 +306,11 @@ def load_data_esnli(args, in_file, data_type=None, test_type=None, out_type=None
                               result = json.loads(json_str)
                               rat = result['question_statement_text']
                               answer = result['answer_text']
+                              # [b]
                               examples.append((f"[rationale] {rat} [answer]", f"{answer} <eos>"))
 
       elif test_type == 'gen':
+            # read the constructed baseline rationales for task model predicted labels
             template_file = os.path.join(current_path, '../path_to_task_model_outputs', args.task+'_'+args.out_type+'_'+args.task_model, \
                   split_type+'_'+args.out_type+'_outputs.jsonl.predictions')
             template_file = os.path.normpath(template_file)
@@ -383,7 +399,8 @@ def load_data_quartz(args, in_file, data_type=None, test_type=None, out_type=Non
       if args.do_train or test_type == 'gold':
             examples = []
             if data_type == 'regular':
-                  template_file = os.path.join(current_path, '../path_to_gold_rationales', split_type+'.jsonl.predictions')
+                  # read baseline rationales (b)
+                  template_file = os.path.join(current_path, '../', 'templated_rationales', args.task, split_type+'.jsonl.predictions')
                   template_file = os.path.normpath(template_file)
                   samples = []
                   with open(template_file, 'r') as json_file:
@@ -394,12 +411,14 @@ def load_data_quartz(args, in_file, data_type=None, test_type=None, out_type=Non
                               rat = result['question_statement_text']
                               samples.append((rat, label))
 
+                  # read gold rationales (r)
                   df = pd.read_csv(in_file)
                   for i, row in df.iterrows():
                         pos_rat = row['rationale']
                         answer = row['answer']
                         sample = samples[i]
                         assert answer == sample[1]
+                        # concatenate [r, b]
                         examples.append((f"[rationale] {pos_rat} {sample[0]} [answer]", f"{answer} <eos>"))
             elif data_type == 'temp':
                   with open(in_file, 'r') as json_file:
@@ -408,9 +427,11 @@ def load_data_quartz(args, in_file, data_type=None, test_type=None, out_type=Non
                               result = json.loads(json_str)
                               rat = result['question_statement_text']
                               answer = result['answer_text']
+                              # [b]
                               examples.append((f"[rationale] {rat} [answer]", f"{answer} <eos>"))
 
       elif test_type == 'gen':
+            # read the constructed baseline rationales for task model predicted labels
             template_file = os.path.join(current_path, '../path_to_task_model_outputs', args.task+'_'+args.out_type+'_'+args.task_model, \
                   split_type+'_'+args.out_type+'_outputs.jsonl.predictions')
             template_file = os.path.normpath(template_file)
