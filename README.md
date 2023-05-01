@@ -9,7 +9,7 @@ conda env create -f rev_environment.yml
 Activate the environment.
 
 ### Construct Baseline Rationales
-In case of incompatibility, please use another environment with packages in [requirements](https://github.com/jifan-chen/QA-Verification-Via-NLI/blob/master/requirements.txt).
+In case of incompatibility, please use another environment with packages in [requirements](https://github.com/jifan-chen/QA-Verification-Via-NLI/blob/master/requirements.txt) to run the code
 ```
 ./run_question_converter.sh task dataset_path device
 ```
