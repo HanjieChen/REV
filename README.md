@@ -16,14 +16,19 @@ In case of incompatibility, please use another environment with packages in [req
 - The input data should be in a `.jsonl` file with the format `{"question_text": "...?", "answer_text": "..."}`
 - The output will be saved in a `.jsonl.predictions` file with the format `{"question_text": "...?", "answer_text": "...", "question_statement_text": "..."}`. We use the `question_statement_text` as the baseline rationale.
 
-### Train the Evaluation Model
+### Train the Evaluation Models
+- Training $g$
 ```
-./rev/train.sh device data_type(regular) task epochs lr
+bash ./rev/train.sh device regular task epochs learning_rate
 ```
+
+- Training $g'$
+```
+bash ./rev/train.sh device temp task epochs learning_rate
 
 ### Compute REV
 ```
-./rev/evaluate.sh device split test_type out_type model_name task
+bash ./rev/evaluate.sh device split test_type out_type model_name task
 ```
 
 ### Acknowledgments
