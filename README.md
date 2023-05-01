@@ -2,7 +2,11 @@
 Code for the paper [REV: Information-Theoretic Evaluation of Free-Text Rationales](https://arxiv.org/pdf/2210.04982.pdf)
 
 ### Preparation
-Install the packages and toolkits in `requirements.txt`
+Create a conda environment:
+```
+conda env create -f rev_environment.yml
+```
+Activate the environment.
 
 ### Construct Baseline Rationales
 In case of incompatibility, please use another environment with packages in [requirements](https://github.com/jifan-chen/QA-Verification-Via-NLI/blob/master/requirements.txt).
