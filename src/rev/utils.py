@@ -69,8 +69,8 @@ def load_data_ecqa(args, in_file, data_type=None, test_type=None, out_type=None)
                               examples.append((f"[rationale] {rat} [answer]", f"{answer} <eos>"))
       elif test_type == 'gen':
             # read the constructed baseline rationales for task model predicted labels
-            template_file = os.path.join(current_path, '../path_to_task_model_outputs', args.task+'_'+args.out_type+'_'+args.task_model, \
-                  split_type+'_'+args.out_type+'_outputs.jsonl.predictions')
+            template_file = os.path.join(current_path, '../task_model_output', args.task+'_'+args.out_type+'-'+args.task_model, \
+                  split_type+'_'+args.out_type+'_baselines.jsonl.predictions')
             template_file = os.path.normpath(template_file)
             samples = []
             with open(template_file, 'r') as json_file:
@@ -190,8 +190,8 @@ def load_data_cose(args, in_file, data_type=None, test_type=None, out_type=None)
 
       elif test_type == 'gen':
             # read the constructed baseline rationales for task model predicted labels
-            template_file = os.path.join(current_path, '../path_to_task_model_outputs', args.task+'_'+args.out_type+'_'+args.task_model, \
-                  split_type+'_'+args.out_type+'_outputs.jsonl.predictions')
+            template_file = os.path.join(current_path, '../task_model_output', args.task+'_'+args.out_type+'-'+args.task_model, \
+                  split_type+'_'+args.out_type+'_baselines.jsonl.predictions')
             template_file = os.path.normpath(template_file)
             samples = []
             with open(template_file, 'r') as json_file:
@@ -311,8 +311,8 @@ def load_data_esnli(args, in_file, data_type=None, test_type=None, out_type=None
 
       elif test_type == 'gen':
             # read the constructed baseline rationales for task model predicted labels
-            template_file = os.path.join(current_path, '../path_to_task_model_outputs', args.task+'_'+args.out_type+'_'+args.task_model, \
-                  split_type+'_'+args.out_type+'_outputs.jsonl.predictions')
+            template_file = os.path.join(current_path, '../task_model_output', args.task+'_'+args.out_type+'-'+args.task_model, \
+                  split_type+'_'+args.out_type+'_baselines.jsonl.predictions')
             template_file = os.path.normpath(template_file)
             samples = []
             with open(template_file, 'r') as json_file:
@@ -432,8 +432,8 @@ def load_data_quartz(args, in_file, data_type=None, test_type=None, out_type=Non
 
       elif test_type == 'gen':
             # read the constructed baseline rationales for task model predicted labels
-            template_file = os.path.join(current_path, '../path_to_task_model_outputs', args.task+'_'+args.out_type+'_'+args.task_model, \
-                  split_type+'_'+args.out_type+'_outputs.jsonl.predictions')
+            template_file = os.path.join(current_path, '../task_model_output', args.task+'_'+args.out_type+'-'+args.task_model, \
+                  split_type+'_'+args.out_type+'_baselines.jsonl.predictions')
             template_file = os.path.normpath(template_file)
             samples = []
             with open(template_file, 'r') as json_file:

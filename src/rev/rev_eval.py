@@ -121,7 +121,7 @@ def main() -> None:
         "--data_type",
         default="regular",
         type=str,
-        help="temp: template, regular: regular",
+        help="temp: b, regular: [r, b]",
     )
     args = parser.parse_args()
     logger.debug(args)
@@ -146,11 +146,21 @@ def main() -> None:
     current_path = os.path.dirname(os.path.abspath(__file__))
     if args.split == 'train':
             split_type = 'train'
-    elif args.split == 'val':
+    elif args.split == 'dev':
             split_type = 'dev'
     elif args.split == 'test':
             split_type = 'test'
 
+    # read gold labels
+    gold_temp_file = os.path.join(current_path, '../', 'templated_rationales', args.task, split_type+'.jsonl.predictions')
+    gold_temp_file = os.path.normpath(gold_temp_file)
+    gold_labels = []
+    with open(gold_temp_file, 'r') as json_file:
+        json_list = list(json_file)
+        for json_str in json_list:
+                result = json.loads(json_str)
+                label = result['answer_text']
+                gold_labels.append(label)
 
     # compute the vi of rationales
     rat_outputs = compute_vi(args, current_path, data_type='regular', device=device)
@@ -158,28 +168,86 @@ def main() -> None:
     # compute the vi of baselines
     base_outputs = compute_vi(args, current_path, data_type='temp', device=device)
 
-    rat_vi_list = []
-    base_vi_list = []
-    for rat_output, base_output in zip(rat_outputs, base_outputs):
-        rat_vi_list.append(rat_output[3])
-        base_vi_list.append(base_output[3])
+    base_corr_list, base_icorr_list = [], []
+    rat_corr_list, rat_icorr_list = [], []
+    for rat_output, base_output, gold_label in zip(rat_outputs, base_outputs, gold_labels):
+            rat = rat_output[0].lower().replace("[rationale]", "").replace("[answer]", "").strip()
+            rat_ = base_output[0].lower().replace("[rationale]", "").replace("[answer]", "").strip()
+            pred = rat_output[1].lower().replace("<eos>", "").strip()
+            pred_ = base_output[1].lower().replace("<eos>", "").strip()
+            assert pred == pred_
+            gold_label = gold_label.lower()
+            if pred == gold_label:
+                    # if rat == '', set cvi = 0
+                    if rat == rat_:
+                         rat_corr_list.append(base_output[3])
+                    else:
+                         rat_corr_list.append(rat_output[3])
+                    base_corr_list.append(base_output[3])
+            else:
+                    if rat == rat_:
+                         rat_icorr_list.append(base_output[3])
+                    else:
+                         rat_icorr_list.append(rat_output[3])
+                    base_icorr_list.append(base_output[3])
+    rat_vi_c = sum(rat_corr_list) / len(rat_corr_list)
+    rat_corr_num = len(rat_corr_list)
+    try:
+         rat_vi_ic = sum(rat_icorr_list) / len(rat_icorr_list)
+    except:
+         rat_vi_ic = 0
+    rat_icorr_num = len(rat_icorr_list)
+    base_vi_c = sum(base_corr_list) / len(base_corr_list)
+    base_corr_num = len(base_corr_list)
+    try:
+         base_vi_ic = sum(base_icorr_list) / len(base_icorr_list)
+    except:
+         base_vi_ic = 0
+    base_icorr_num = len(base_icorr_list)
 
     # compute cvi
-    cvi = sum(rat_vi_list) / len(rat_vi_list) - sum(base_vi_list) / len(base_vi_list)
+    cvi_c = rat_vi_c - base_vi_c
+    cvi_ic = rat_vi_ic - base_vi_ic
+    cvi = (rat_vi_c * rat_corr_num + rat_vi_ic * rat_icorr_num) / (rat_corr_num + rat_icorr_num) - \
+            (base_vi_c * base_corr_num + base_vi_ic * base_icorr_num) / (base_corr_num + base_icorr_num)
 
-    print('cvi:{}'.format(cvi))
+    print('rat_vi_c: {} | rat_corr_num: {} | rat_vi_ic: {} | rat_icorr_num: {} |\
+            base_vi_c: {} | base_corr_num: {} | base_vi_ic: {} | base_icorr_num: {} |\
+                    cvi_c: {} | cvi_ic: {} | cvi:{}'.format(rat_vi_c, rat_corr_num, rat_vi_ic, rat_icorr_num, \
+                            base_vi_c, base_corr_num, base_vi_ic, base_icorr_num, \
+                                    cvi_c, cvi_ic, cvi))
 
 
 def compute_vi(args, current_path, data_type, device):
-    if data_type == 'regular':
-        args.data_path = os.path.join(current_path, '../path_to_gold_or_generated_rationale')
-        args.in_file = os.path.join(args.data_path, args.split+'_'+'filename.jsonl')
-    elif data_type == 'temp':
-        args.data_path = os.path.join(current_path, '../path_to_template_rationale')
-        args.in_file = os.path.join(args.data_path, args.split+'_'+'filename.jsonl')
+    if args.test_type == 'gold':
+        # read gold data
+        if data_type == 'regular':
+            args.data_path = os.path.join(current_path, '../', 'data', args.task)
+            args.data_path = os.path.normpath(args.data_path)
+            if args.split == 'train':
+                  args.in_file = os.path.join(args.data_path, args.train_path)
+            elif args.split == 'dev':
+                  args.in_file = os.path.join(args.data_path, args.val_path)
+            elif args.split == 'test':
+                  args.in_file = os.path.join(args.data_path, args.test_path)
+        elif data_type == 'temp':
+            args.in_file  = os.path.join(current_path, '../', 'templated_rationales', args.task, args.split+'.jsonl.predictions')
+            args.in_file = os.path.normpath(args.in_file)
+
+    elif args.test_type == 'gen':
+        # read predictions of task model
+        if data_type == 'regular':
+            args.data_path = os.path.join(current_path, '../', 'task_model_output', args.task+'_'+args.out_type+'-'+args.task_model)
+            args.data_path = os.path.normpath(args.data_path)
+            args.in_file = os.path.join(args.data_path, args.split+'_'+args.out_type+'_predictions.jsonl')
+        elif data_type == 'temp':
+            args.data_path = os.path.join(current_path, '../', 'task_model_output', args.task+'_'+args.out_type+'-'+args.task_model)
+            args.data_path = os.path.normpath(args.data_path)
+            args.in_file = os.path.join(args.data_path, args.split+'_'+args.out_type+'_baselines.jsonl.predictions')
     
-    args.model_name_or_path = os.path.join(current_path, 'output', args.task+'_'+'regular'+'-'+args.model_name)
-    args.out_file = os.path.join(current_path, 'output', 'output_filename.jsonl')
+    args.model_name_or_path = os.path.join(current_path, 'output', args.task+'_'+data_type+'-'+args.model_name)
+    args.out_file = os.path.join(current_path, 'output', args.task+'_'+data_type+'-'+args.model_name, \
+                    args.split+'_'+args.out_type+'_predictions.jsonl')
 
     tokenizer, model = init_model(args.model_name_or_path, device)
     examples = load_data_func[args.task](args, args.in_file, data_type=data_type, test_type=args.test_type, out_type=args.out_type)
@@ -235,7 +303,7 @@ def generate_conditional(tokenizer, model, args, input, output, device):
         top_p=args.p if args.p > 0 else None,
         top_k=args.k if args.k > 0 else None,
         num_beams=args.beams if args.beams > 0 else None,
-        decoder_start_token_id = decoder_start_token_id, # tokenizer.encode("[answer]")[0]
+        decoder_start_token_id = decoder_start_token_id,
         early_stopping=True,
         no_repeat_ngram_size=2,
         return_dict_in_generate=True,
