@@ -205,17 +205,13 @@ def main() -> None:
          base_vi_ic = 0
     base_icorr_num = len(base_icorr_list)
 
-    # compute cvi
-    cvi_c = rat_vi_c - base_vi_c
-    cvi_ic = rat_vi_ic - base_vi_ic
-    cvi = (rat_vi_c * rat_corr_num + rat_vi_ic * rat_icorr_num) / (rat_corr_num + rat_icorr_num) - \
+    # compute rev for correct (c) and incorrect (ic) predictions, and overall rev
+    rev_c = rat_vi_c - base_vi_c
+    rev_ic = rat_vi_ic - base_vi_ic
+    rev = (rat_vi_c * rat_corr_num + rat_vi_ic * rat_icorr_num) / (rat_corr_num + rat_icorr_num) - \
             (base_vi_c * base_corr_num + base_vi_ic * base_icorr_num) / (base_corr_num + base_icorr_num)
 
-    print('rat_vi_c: {} | rat_corr_num: {} | rat_vi_ic: {} | rat_icorr_num: {} |\
-            base_vi_c: {} | base_corr_num: {} | base_vi_ic: {} | base_icorr_num: {} |\
-                    cvi_c: {} | cvi_ic: {} | cvi:{}'.format(rat_vi_c, rat_corr_num, rat_vi_ic, rat_icorr_num, \
-                            base_vi_c, base_corr_num, base_vi_ic, base_icorr_num, \
-                                    cvi_c, cvi_ic, cvi))
+    print('rev_c: {} | rev_ic: {} | rev:{}'.format(rev_c, rev_ic, rev))
 
 
 def compute_vi(args, current_path, data_type, device):
