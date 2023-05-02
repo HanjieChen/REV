@@ -25,6 +25,7 @@ bash ./rev/train.sh device regular task epochs learning_rate
 - Training $g'$
 ```
 bash ./rev/train.sh device temp task epochs learning_rate
+```
 
 ### Compute REV
 ```
