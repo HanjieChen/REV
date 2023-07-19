@@ -39,10 +39,21 @@ The code for constructing baseline rationales (for CQA task) was adapted from [j
 ### Reference:
 If you find this repository helpful, please cite our paper:
 ```bibtex
-@article{chen2022rev,
-  title={REV: Information-Theoretic Evaluation of Free-Text Rationales},
-  author={Chen, Hanjie and Brahman, Faeze and Ren, Xiang and Ji, Yangfeng and Choi, Yejin and Swayamdipta, Swabha},
-  journal={arXiv preprint arXiv:2210.04982},
-  year={2022}
+@inproceedings{chen-etal-2023-rev,
+    title = "{REV}: Information-Theoretic Evaluation of Free-Text Rationales",
+    author = "Chen, Hanjie  and
+      Brahman, Faeze  and
+      Ren, Xiang  and
+      Ji, Yangfeng  and
+      Choi, Yejin  and
+      Swayamdipta, Swabha",
+    booktitle = "Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+    month = jul,
+    year = "2023",
+    address = "Toronto, Canada",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.acl-long.112",
+    pages = "2007--2030",
+    abstract = "Generating free-text rationales is a promising step towards explainable NLP, yet evaluating such rationales remains a challenge. Existing metrics have mostly focused on measuring the association between the rationale and a given label. We argue that an ideal metric should focus on the new information uniquely provided in the rationale that is otherwise not provided in the input or the label. We investigate this research problem from an information-theoretic perspective using conditional V-information (Hewitt et al., 2021). More concretely, we propose a metric called REV (Rationale Evaluation with conditional V-information), to quantify the amount of new, label-relevant information in a rationale beyond the information already available in the input or the label. Experiments across four benchmarks with reasoning tasks, including chain-of-thought, demonstrate the effectiveness of REV in evaluating rationale-label pairs, compared to existing metrics. We further demonstrate REV is consistent with human judgments on rationale evaluations and provides more sensitive measurements of new information in free-text rationales. When used alongside traditional performance metrics, REV provides deeper insights into models{'} reasoning and prediction processes.",
 }
 ```
