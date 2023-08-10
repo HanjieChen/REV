@@ -17,8 +17,15 @@ In case of incompatibility, please use another environment with packages in [req
 - The output will be saved in a `.jsonl.predictions` file with the format `{"question_text": "...?", "answer_text": "...", "question_statement_text": "..."}`. We use the `question_statement_text` as the baseline rationale.
 
 ### Construct Baseline Rationales for NLI
-We first use a template to convert (premise, hypothesis, label) tuple into a baseline rationale: `premise <em>implies/contradicts/is not related to</em>
+We first use a template to convert (premise, hypothesis, label) tuple into a baseline rationale: `premise implies/contradicts/is not related to
 hypothesis`
+```
+python template.py
+```
+Then we paraphrase these templated, vacuous NLI rationales using a [pre-trained model](https://huggingface.co/humarin/chatgpt_paraphraser_on_T5_base)
+```
+python paraphrase.py
+```
 
 ### Train the Evaluation Models
 - Training $g$
