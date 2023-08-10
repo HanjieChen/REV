@@ -8,13 +8,17 @@ conda env create -f rev_environment.yml
 ```
 Activate the environment.
 
-### Construct Baseline Rationales
+### Construct Baseline Rationales for CQA
 In case of incompatibility, please use another environment with packages in [requirements](https://github.com/jifan-chen/QA-Verification-Via-NLI/blob/master/requirements.txt) to run the code
 ```
 ./run_question_converter.sh task dataset_path device
 ```
 - The input data should be in a `.jsonl` file with the format `{"question_text": "...?", "answer_text": "..."}`
 - The output will be saved in a `.jsonl.predictions` file with the format `{"question_text": "...?", "answer_text": "...", "question_statement_text": "..."}`. We use the `question_statement_text` as the baseline rationale.
+
+### Construct Baseline Rationales for NLI
+We first use a template to convert (premise, hypothesis, label) tuple into a baseline rationale: `premise <em>implies/contradicts/is not related to</em>
+hypothesis`
 
 ### Train the Evaluation Models
 - Training $g$
