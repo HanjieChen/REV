@@ -18,7 +18,6 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--gpu', default=0, type=int, help='0:gpu, -1:cpu')
 parser.add_argument('--gpu_id', default='0', type=str, help='gpu id')
 parser.add_argument('--task', type=str, default='ESNLI', help='task name (ESNLI)')
-parser.add_argument('--rat_type', default="pos", type=str, help="Use free flow rationales ('ff') or positive rationales ('pos') for training")
 parser.add_argument('--test_type', default="gen", type=str, help="gold: gold rationales, gen: generative rationales")
 parser.add_argument("--out_type", default="YR", type=str, help="Output type: 'YR' label and rationale, 'Y' label only, 'R' rationale only, 'RY' rationale and label")
 parser.add_argument('--seed', type=int, default=42, help="random seed for initialization")
@@ -33,12 +32,6 @@ parser.add_argument(
         default="t5-large",
         type=str,
         help="task model name",
-    )
-parser.add_argument(
-        "--data_type",
-        default="regular",
-        type=str,
-        help="temp: b, regular: [r, b]",
     )
 args = parser.parse_args()
 print(args)
