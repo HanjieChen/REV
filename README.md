@@ -20,11 +20,11 @@ In case of incompatibility, please use another environment with packages in [req
 We first use a template to convert (premise, hypothesis, label) tuple into a baseline rationale: `premise implies/contradicts/is not related to
 hypothesis`
 ```
-python template.py
+python ./esnli_baseline/template.py
 ```
 Then we paraphrase these templated, vacuous NLI rationales using a [pre-trained model](https://huggingface.co/humarin/chatgpt_paraphraser_on_T5_base)
 ```
-python paraphrase.py
+python ./esnli_baseline/paraphrase.py
 ```
 
 ### Train the Evaluation Models
