@@ -279,7 +279,7 @@ def load_data_esnli(args, in_file, data_type=None, test_type=None, out_type=None
             examples = []
             if data_type == 'regular':
                   # read baseline rationales (b)
-                  template_file = os.path.join(current_path, '../', 'templated_rationales', args.task, split_type+'.jsonl.predictions')
+                  template_file = os.path.join(current_path, '../', 'templated_rationales', args.task, split_type+'.jsonl.predictions') + '_r'
                   template_file = os.path.normpath(template_file)
                   samples = []
                   with open(template_file, 'r') as json_file:
@@ -300,6 +300,7 @@ def load_data_esnli(args, in_file, data_type=None, test_type=None, out_type=None
                         # concatenate [r, b]
                         examples.append((f"[rationale] {pos_rat} {sample[0]} [answer]", f"{answer} <eos>"))
             elif data_type == 'temp':
+                  in_file += '_r'
                   with open(in_file, 'r') as json_file:
                         json_list = list(json_file)
                         for json_str in json_list:
@@ -312,7 +313,7 @@ def load_data_esnli(args, in_file, data_type=None, test_type=None, out_type=None
       elif test_type == 'gen':
             # read the constructed baseline rationales for task model predicted labels
             template_file = os.path.join(current_path, '../task_model_output', args.task+'_'+args.out_type+'-'+args.task_model, \
-                  split_type+'_'+args.out_type+'_baselines.jsonl.predictions')
+                  split_type+'_'+args.out_type+'_baselines.jsonl.predictions') + '_r'
             template_file = os.path.normpath(template_file)
             samples = []
             with open(template_file, 'r') as json_file:
